@@ -86,6 +86,10 @@
                     <i class="fas fa-fw fa-cloud-download-alt"></i>
                     <span>Update cache</span>
                 </a>
+                <a :class="{disabled: selected.length === 0}" @click="showDialogUpdateCache(selected, true)">
+                    <i class="fas fa-fw fa-cloud-download-alt"></i>
+                    <span>!Update cache with overwrite!</span>
+                </a>
                 <a id="cancel-edit" @click="toggleEditMode">
                     <i class="fas fa-fw fa-times"></i>
                 </a>
@@ -135,6 +139,9 @@
                         </a>
                         <a title="Update cache" @click="showDialogUpdateCache([idx])">
                             <i class="fas fa-cloud-download-alt"></i>
+                        </a>
+                        <a title="Update cache with overwrite" @click="showDialogUpdateCache([idx], true)">
+                            !<i class="fas fa-cloud-download-alt"></i>!
                         </a>
                     </div>
                 </div>
