@@ -347,7 +347,6 @@ func (h *webHandler) apiUpdateCache(w http.ResponseWriter, r *http.Request, ps h
 				return
 			}
 
-			book.Excerpt = article.Meta.Excerpt
 			book.Author = article.Meta.Author
 			book.MinReadTime = article.Meta.MinReadTime
 			book.MaxReadTime = article.Meta.MaxReadTime
@@ -357,6 +356,11 @@ func (h *webHandler) apiUpdateCache(w http.ResponseWriter, r *http.Request, ps h
 			// Make sure title is not empty
 			if article.Meta.Title != "" {
 				book.Title = article.Meta.Title
+			}
+
+			// Make sure excerpt is not replaced with empty string
+			if article.Meta.Excerpt != "" {
+				book.Excerpt = article.Meta.Excerpt
 			}
 
 			// Check if book has content
