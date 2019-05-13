@@ -50,6 +50,9 @@
             mixins: [new Base()],
             data: {
                 targetURL: '',
+                targetTitle: '',
+                targetExcerpt: '',
+                targetTags: '',
                 nightMode: false,
                 inIframe: false,
             },
@@ -112,13 +115,16 @@
                         }, {
                             name: 'title',
                             label: 'Custom title (optional)',
+                            value: this.targetTitle,
                         }, {
                             name: 'excerpt',
                             label: 'Custom excerpt (optional)',
                             type: 'area',
+                            value: this.targetExcerpt,
                         }, {
                             name: 'tags',
                             label: 'Comma separated tags (optional)',
+                            value: this.targetTags,
                         }, ],
                         mainText: 'Save',
                         secondText: this.inIframe ? 'Cancel' : '',
@@ -192,13 +198,39 @@
 
                 // Get target URL
                 var rxURL = /[&?]url=([^&]+)(&|$)/g,
-                    match = rxURL.exec(location.href);
-
-                if (match != null) {
-                    var dst = match[1];
+                    matchURL = rxURL.exec(location.href);
+                if (matchURL != null) {
+                    var dst = matchURL[1];
                     this.targetURL = decodeURIComponent(dst);
                 } else {
                     this.targetURL = '';
+                }
+
+                // Get target Title
+                var rxTitle = /[&?]title=([^&]+)(&|$)/g,
+                    matchTitle = rxTitle.exec(location.href);
+                if (matchTitle != null) {
+                    this.targetTitle = decodeURIComponent(matchTitle[1]);
+                } else {
+                    this.targetTitle = '';
+                }
+
+                // Get target Excerpt
+                var rxExcerpt = /[&?]excerpt=([^&]+)(&|$)/g,
+                    matchExcerpt = rxExcerpt.exec(location.href);
+                if (matchExcerpt != null) {
+                    this.targetExcerpt = decodeURIComponent(matchExcerpt[1]);
+                } else {
+                    this.targetExcerpt = '';
+                }
+
+                // Get target Tags
+                var rxTags = /[&?]tags=([^&]+)(&|$)/g,
+                    matchTags = rxTags.exec(location.href);
+                if (matchTags != null) {
+                    this.targetTags = decodeURIComponent(matchTags[1]);
+                } else {
+                    this.targetTags = '';
                 }
 
                 // Show dialog
