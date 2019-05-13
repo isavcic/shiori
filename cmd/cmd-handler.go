@@ -330,8 +330,10 @@ func (h *cmdHandler) updateBookmarks(cmd *cobra.Command, args []string) {
 				book.Content = article.Content
 				book.HTML = article.RawContent
 
-				if overwrite {
+				if overwrite || book.Title == "" {
 					book.Title = article.Meta.Title
+				}
+				if overwrite || book.Excerpt == "" {
 					book.Excerpt = article.Meta.Excerpt
 				}
 
