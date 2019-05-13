@@ -850,3 +850,4 @@ func printBookmarks(bookmarks ...model.Bookmark) {
 		fmt.Println()
 	}
 }
+

@@ -38,3 +38,4 @@ type LoginRequest struct {
 	Password string `json:"password"`
 	Remember bool   `json:"remember"`
 }
+

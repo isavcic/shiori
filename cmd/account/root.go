@@ -54,3 +54,4 @@ func NewAccountCmd(db dt.Database) *cobra.Command {
 	rootCmd.AddCommand(addCmd, printCmd, deleteCmd)
 	return rootCmd
 }
+

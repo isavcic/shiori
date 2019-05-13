@@ -118,8 +118,8 @@ func (db *SQLiteDatabase) InsertBookmark(bookmark model.Bookmark) (bookmarkID in
 
 	// Save article to database
 	tx.MustExec(`INSERT INTO bookmark (
-		id, url, title, image_url, excerpt, author, 
-		min_read_time, max_read_time, modified) 
+		id, url, title, image_url, excerpt, author,
+		min_read_time, max_read_time, modified)
 		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		bookmark.ID,
 		bookmark.URL,
@@ -132,7 +132,7 @@ func (db *SQLiteDatabase) InsertBookmark(bookmark model.Bookmark) (bookmarkID in
 		bookmark.Modified)
 
 	// Save bookmark content
-	tx.MustExec(`INSERT INTO bookmark_content 
+	tx.MustExec(`INSERT INTO bookmark_content
 		(docid, title, content, html) VALUES (?, ?, ?, ?)`,
 		bookmark.ID, bookmark.Title, bookmark.Content, bookmark.HTML)
 
@@ -176,16 +176,16 @@ func (db *SQLiteDatabase) InsertBookmark(bookmark model.Bookmark) (bookmarkID in
 // GetBookmarks fetch list of bookmarks based on submitted ids.
 func (db *SQLiteDatabase) GetBookmarks(withContent bool, ids ...int) ([]model.Bookmark, error) {
 	// Create query
-	query := `SELECT 
-		b.id, b.url, b.title, b.image_url, b.excerpt, b.author, 
+	query := `SELECT
+		b.id, b.url, b.title, b.image_url, b.excerpt, b.author,
 		b.min_read_time, b.max_read_time, b.modified, bc.content <> "" has_content
 		FROM bookmark b
 		LEFT JOIN bookmark_content bc ON bc.docid = b.id`
 
 	if withContent {
-		query = `SELECT 
-			b.id, b.url, b.title, b.image_url, b.excerpt, b.author, 
-			b.min_read_time, b.max_read_time, b.modified, bc.content, bc.html, 
+		query = `SELECT
+			b.id, b.url, b.title, b.image_url, b.excerpt, b.author,
+			b.min_read_time, b.max_read_time, b.modified, bc.content, bc.html,
 			bc.content <> "" has_content
 			FROM bookmark b
 			LEFT JOIN bookmark_content bc ON bc.docid = b.id`
@@ -215,7 +215,7 @@ func (db *SQLiteDatabase) GetBookmarks(withContent bool, ids ...int) ([]model.Bo
 	}
 
 	// Fetch tags for each bookmarks
-	stmtGetTags, err := db.Preparex(`SELECT t.id, t.name 
+	stmtGetTags, err := db.Preparex(`SELECT t.id, t.name
 		FROM bookmark_tag bt LEFT JOIN tag t ON bt.tag_id = t.id
 		WHERE bt.bookmark_id = ? ORDER BY t.name`)
 	if err != nil {
@@ -288,8 +288,8 @@ func (db *SQLiteDatabase) DeleteBookmarks(ids ...int) (err error) {
 func (db *SQLiteDatabase) SearchBookmarks(orderLatest bool, keyword string, tags ...string) ([]model.Bookmark, error) {
 	// Prepare query
 	args := []interface{}{}
-	query := `SELECT 
-		b.id, b.url, b.title, b.image_url, b.excerpt, b.author, 
+	query := `SELECT
+		b.id, b.url, b.title, b.image_url, b.excerpt, b.author,
 		b.min_read_time, b.max_read_time, b.modified, bc.content <> "" has_content
 		FROM bookmark b
 		LEFT JOIN bookmark_content bc ON bc.docid = b.id
@@ -299,7 +299,7 @@ func (db *SQLiteDatabase) SearchBookmarks(orderLatest bool, keyword string, tags
 	keyword = strings.TrimSpace(keyword)
 	if keyword != "" {
 		query += ` AND (b.url LIKE ? OR b.id IN (
-			SELECT docid id FROM bookmark_content 
+			SELECT docid id FROM bookmark_content
 			WHERE title MATCH ? OR content MATCH ?))`
 		args = append(args, "%"+keyword+"%", keyword, keyword)
 	}
@@ -307,7 +307,7 @@ func (db *SQLiteDatabase) SearchBookmarks(orderLatest bool, keyword string, tags
 	// Create where clause for tags
 	if len(tags) > 0 {
 		whereTagClause := ` AND b.id IN (
-			SELECT bookmark_id FROM bookmark_tag 
+			SELECT bookmark_id FROM bookmark_tag
 			WHERE tag_id IN (SELECT id FROM tag WHERE name IN (`
 
 		for _, tag := range tags {
@@ -335,7 +335,7 @@ func (db *SQLiteDatabase) SearchBookmarks(orderLatest bool, keyword string, tags
 	}
 
 	// Fetch tags for each bookmarks
-	stmtGetTags, err := db.Preparex(`SELECT t.id, t.name 
+	stmtGetTags, err := db.Preparex(`SELECT t.id, t.name
 		FROM bookmark_tag bt LEFT JOIN tag t ON bt.tag_id = t.id
 		WHERE bt.bookmark_id = ? ORDER BY t.name`)
 	if err != nil {
@@ -527,8 +527,8 @@ func (db *SQLiteDatabase) DeleteAccounts(usernames ...string) error {
 // GetTags fetch list of tags and their frequency
 func (db *SQLiteDatabase) GetTags() ([]model.Tag, error) {
 	tags := []model.Tag{}
-	query := `SELECT bt.tag_id id, t.name, COUNT(bt.tag_id) n_bookmarks 
-		FROM bookmark_tag bt 
+	query := `SELECT bt.tag_id id, t.name, COUNT(bt.tag_id) n_bookmarks
+		FROM bookmark_tag bt
 		LEFT JOIN tag t ON bt.tag_id = t.id
 		GROUP BY bt.tag_id ORDER BY t.name`
 
@@ -559,3 +559,4 @@ func (db *SQLiteDatabase) GetBookmarkID(url string) int {
 	db.Get(&bookmarkID, `SELECT id FROM bookmark WHERE url = ?`, url)
 	return bookmarkID
 }
+
