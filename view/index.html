@@ -576,38 +576,64 @@
                         listID.push(this.bookmarks[indices[i]].id);
                     }
 
-                    // Show dialog
-                    this.showDialog({
-                        title: 'Update Cache',
-                        content: 'Update cache for selected bookmarks? This action is irreversible, and will overwrite any part of the bookmark for which (non-empty) data was found online.',
-                        mainText: 'Yes',
-                        secondText: 'No',
-                        mainClick: () => {
-                            this.dialog.loading = true;
-                            rest.put('/api/cache/?overwrite=' + overwrite.toString(), listID)
-                                .then((response) => {
-                                    this.selected = [];
-                                    this.editMode = false;
-                                    this.dialog.loading = false;
-                                    this.dialog.visible = false;
+                    if (overwrite) {
+                        // Show dialog
+                        this.showDialog({
+                            title: 'Update Cache',
+                            content: 'Update cache for selected bookmarks? This action is irreversible, and will overwrite any part of the bookmark for which (non-empty) data was found online.',
+                            mainText: 'Yes',
+                            secondText: 'No',
+                            mainClick: () => {
+                                this.dialog.loading = true;
+                                rest.put('/api/cache/?overwrite=' + overwrite.toString(), listID)
+                                    .then((response) => {
+                                        this.selected = [];
+                                        this.editMode = false;
+                                        this.dialog.loading = false;
+                                        this.dialog.visible = false;
 
-                                    response.data.forEach(book => {
-                                        for (var i = 0; i < indices.length; i++) {
-                                            var idx = indices[i];
-                                            if (book.id === this.bookmarks[idx].id) {
-                                                this.bookmarks.splice(idx, 1, book);
-                                                break;
+                                        response.data.forEach(book => {
+                                            for (var i = 0; i < indices.length; i++) {
+                                                var idx = indices[i];
+                                                if (book.id === this.bookmarks[idx].id) {
+                                                    this.bookmarks.splice(idx, 1, book);
+                                                    break;
+                                                }
                                             }
-                                        }
+                                        });
+                                    })
+                                    .catch((error) => {
+                                        var errorMsg = (error.response ? error.response.data : error.message).trim();
+                                        if (errorMsg.startsWith('Token error')) this.showDialogSessionExpired(errorMsg);
+                                        else this.showErrorDialog(errorMsg);
                                     });
-                                })
-                                .catch((error) => {
-                                    var errorMsg = (error.response ? error.response.data : error.message).trim();
-                                    if (errorMsg.startsWith('Token error')) this.showDialogSessionExpired(errorMsg);
-                                    else this.showErrorDialog(errorMsg);
+                            }
+                        });
+                    } else {
+                        this.dialog.loading = true;
+                        rest.put('/api/cache/?overwrite=' + overwrite.toString(), listID)
+                            .then((response) => {
+                                this.selected = [];
+                                this.editMode = false;
+                                this.dialog.loading = false;
+                                this.dialog.visible = false;
+
+                                response.data.forEach(book => {
+                                    for (var i = 0; i < indices.length; i++) {
+                                        var idx = indices[i];
+                                        if (book.id === this.bookmarks[idx].id) {
+                                            this.bookmarks.splice(idx, 1, book);
+                                            break;
+                                        }
+                                    }
                                 });
-                        }
-                    });
+                            })
+                            .catch((error) => {
+                                var errorMsg = (error.response ? error.response.data : error.message).trim();
+                                if (errorMsg.startsWith('Token error')) this.showDialogSessionExpired(errorMsg);
+                                else this.showErrorDialog(errorMsg);
+                            });
+                    }
                 },
                 showDialogAddTags(indices) {
                     // Check and prepare indices
