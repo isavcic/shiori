@@ -551,7 +551,10 @@
                         }
                     });
                 },
-                showDialogUpdateCache(indices) {
+                showDialogUpdateCache(indices, overwrite) {
+                    // Set default overwrite value to `false`
+                    overwrite = overwrite === undefined ? false : overwrite;
+
                     // Check and prepare indices
                     if (!(indices instanceof Array)) return;
                     if (indices.length === 0) return;
@@ -574,7 +577,7 @@
                         secondText: 'No',
                         mainClick: () => {
                             this.dialog.loading = true;
-                            rest.put('/api/cache/', listID)
+                            rest.put('/api/cache/?overwrite=' + overwrite.toString(), listID)
                                 .then((response) => {
                                     this.selected = [];
                                     this.editMode = false;
