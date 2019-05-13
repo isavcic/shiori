@@ -120,7 +120,7 @@ func NewShioriCmd(db dt.Database, dataDir string) *cobra.Command {
 	updateCmd.Flags().StringSliceP("tags", "t", []string{}, "Comma-separated tags for this bookmark.")
 	updateCmd.Flags().BoolP("offline", "o", false, "Update bookmark without fetching data from internet.")
 	updateCmd.Flags().BoolP("yes", "y", false, "Skip confirmation prompt and update ALL bookmarks")
-	updateCmd.Flags().Bool("dont-overwrite", false, "Don't overwrite existing metadata. Useful when only want to update bookmark's content.")
+	updateCmd.Flags().Bool("overwrite", false, "Also overwrite existing metadata (title and excerpt), even if they are not manually specified through flags.")
 
 	deleteCmd.Flags().BoolP("yes", "y", false, "Skip confirmation prompt and delete ALL bookmarks")
 

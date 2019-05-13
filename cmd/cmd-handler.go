@@ -218,7 +218,7 @@ func (h *cmdHandler) updateBookmarks(cmd *cobra.Command, args []string) {
 	tags, _ := cmd.Flags().GetStringSlice("tags")
 	offline, _ := cmd.Flags().GetBool("offline")
 	skipConfirm, _ := cmd.Flags().GetBool("yes")
-	dontOverwrite := cmd.Flags().Changed("dont-overwrite")
+	overwrite := cmd.Flags().Changed("overwrite")
 
 	title = normalizeSpace(title)
 	excerpt = normalizeSpace(excerpt)
@@ -330,7 +330,7 @@ func (h *cmdHandler) updateBookmarks(cmd *cobra.Command, args []string) {
 				book.Content = article.Content
 				book.HTML = article.RawContent
 
-				if !dontOverwrite {
+				if overwrite {
 					book.Title = article.Meta.Title
 					book.Excerpt = article.Meta.Excerpt
 				}
