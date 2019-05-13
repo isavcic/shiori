@@ -357,16 +357,14 @@ func (h *webHandler) apiUpdateCache(w http.ResponseWriter, r *http.Request, ps h
 			book.Content = article.Content
 			book.HTML = article.RawContent
 
-			if (overwrite) {
-				// Make sure title is not empty
-				if article.Meta.Title != "" {
-					book.Title = article.Meta.Title
-				}
+			// Make sure title is not empty
+			if book.Title == "" || (overwrite && article.Meta.Title != "") {
+				book.Title = article.Meta.Title
+			}
 
-				// Make sure excerpt is not replaced with empty string
-				if article.Meta.Excerpt != "" {
-					book.Excerpt = article.Meta.Excerpt
-				}
+			// Make sure excerpt is not replaced with empty string
+			if book.Excerpt == "" || (overwrite && article.Meta.Excerpt != "") {
+				book.Excerpt = article.Meta.Excerpt
 			}
 
 			// Check if book has content
