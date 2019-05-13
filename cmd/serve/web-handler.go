@@ -109,3 +109,4 @@ func redirectPage(w http.ResponseWriter, r *http.Request, url string) {
 	w.Header().Set("Expires", "0")
 	http.Redirect(w, r, url, 301)
 }
+

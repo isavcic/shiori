@@ -95,3 +95,4 @@ func (h *cmdHandler) deleteAccounts(cmd *cobra.Command, args []string) {
 
 	fmt.Println("Account(s) have been deleted")
 }
+

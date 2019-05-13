@@ -431,3 +431,4 @@ func clearUTMParams(url *nurl.URL) {
 
 	url.RawQuery = newQuery.Encode()
 }
+

@@ -12,21 +12,21 @@ var YlaDialog = function () {
                         <template v-for="(field,index) in formFields">
                             <p v-if="showLabel" class="label">{{field.label}} :</p>
                             <textarea v-if="field.type === 'area'"
-                                      :style="{gridColumnEnd: showLabel ? null : 'span 2'}" 
-                                      :placeholder="field.label" 
+                                      :style="{gridColumnEnd: showLabel ? null : 'span 2'}"
+                                      :placeholder="field.label"
                                       :tabindex="index+1"
                                       ref="input"
-                                      v-model="field.value" 
+                                      v-model="field.value"
                                       @focus="$event.target.select()"
                                       @keyup="handleInput(index)">
                             </textarea>
                             <input v-else
-                                   :style="{gridColumnEnd: showLabel ? null : 'span 2'}" 
-                                   :type="fieldType(field)" 
-                                   :placeholder="field.label" 
+                                   :style="{gridColumnEnd: showLabel ? null : 'span 2'}"
+                                   :type="fieldType(field)"
+                                   :placeholder="field.label"
                                    :tabindex="index+1"
                                    ref="input"
-                                   v-model="field.value" 
+                                   v-model="field.value"
                                    @focus="$event.target.select()"
                                    @keyup="handleInput(index)"
                                    @keyup.enter="handleInputEnter(index)">
@@ -37,16 +37,16 @@ var YlaDialog = function () {
                 <div class="yla-dialog__footer">
                     <i v-if="loading" class="fas fa-fw fa-spinner fa-spin"></i>
                     <slot v-else name="custom-footer">
-                        <a v-if="secondText" 
-                           :tabindex="btnTabIndex+1" 
-                           @click="handleSecondClick" 
-                           @keyup.enter="handleSecondClick" 
+                        <a v-if="secondText"
+                           :tabindex="btnTabIndex+1"
+                           @click="handleSecondClick"
+                           @keyup.enter="handleSecondClick"
                            class="yla-dialog__button">{{secondText}}
                         </a>
-                        <a :tabindex="btnTabIndex" 
+                        <a :tabindex="btnTabIndex"
                            ref="mainButton"
-                           @click="handleMainClick" 
-                           @keyup.enter="handleMainClick" 
+                           @click="handleMainClick"
+                           @keyup.enter="handleMainClick"
                            class="yla-dialog__button main">{{mainText}}
                         </a>
                     </slot>

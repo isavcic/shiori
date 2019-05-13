@@ -33,3 +33,4 @@ func getDataDirectory() string {
 	// When all fail, use current working directory
 	return "."
 }
+

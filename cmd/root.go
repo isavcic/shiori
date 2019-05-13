@@ -140,3 +140,4 @@ func NewShioriCmd(db dt.Database, dataDir string) *cobra.Command {
 		updateCmd, deleteCmd, openCmd, importCmd, exportCmd, pocketCmd)
 	return rootCmd
 }
+
