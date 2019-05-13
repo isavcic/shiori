@@ -314,6 +314,10 @@ func (h *webHandler) apiUpdateCache(w http.ResponseWriter, r *http.Request, ps h
 	err := h.checkAPIToken(r)
 	checkError(err)
 
+	// Whether to overwrite titlle and excerpt
+	overwriteStr := r.URL.Query().Get("overwrite")
+	overwrite := overwriteStr == "true"
+
 	// Decode request
 	ids := []int{}
 	err = json.NewDecoder(r.Body).Decode(&ids)
@@ -353,14 +357,16 @@ func (h *webHandler) apiUpdateCache(w http.ResponseWriter, r *http.Request, ps h
 			book.Content = article.Content
 			book.HTML = article.RawContent
 
-			// Make sure title is not empty
-			if article.Meta.Title != "" {
-				book.Title = article.Meta.Title
-			}
+			if (overwrite) {
+				// Make sure title is not empty
+				if article.Meta.Title != "" {
+					book.Title = article.Meta.Title
+				}
 
-			// Make sure excerpt is not replaced with empty string
-			if article.Meta.Excerpt != "" {
-				book.Excerpt = article.Meta.Excerpt
+				// Make sure excerpt is not replaced with empty string
+				if article.Meta.Excerpt != "" {
+					book.Excerpt = article.Meta.Excerpt
+				}
 			}
 
 			// Check if book has content
