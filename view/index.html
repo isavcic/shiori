@@ -752,7 +752,10 @@
                     baseBookmarklet = `(function () {
                         var shioriURL = '$SHIORI_URL',
                             bookmarkURL = location.href,
-                            submitURL = shioriURL + '/submit?url=' + encodeURIComponent(bookmarkURL);
+                            bookmarkTitle = document.title,
+                            submitURL = shioriURL + '/submit' +
+                                '?url=' + encodeURIComponent(bookmarkURL) +
+                                '&title=' + encodeURIComponent(bookmarkTitle);
 
                         if (bookmarkURL.startsWith('https://') && !shioriURL.startsWith('https://')) {
                             window.open(submitURL, '_blank');
