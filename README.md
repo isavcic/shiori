@@ -57,6 +57,41 @@ And this installs it to `$GOPATH/bin`:
 go install
 ```
 
+## Development
+
+Here are some usefull commands if you want ot hack on the code.
+
+Get the sources, dependencies and build the binary with:
+
+```
+go get github.com/RadhiFadlillah/shiori
+```
+
+Then switch to the local repository with:
+
+```
+cd $GOPATH/src/github.com/RadhiFadlillah/shiori
+```
+
+Whenever you modify content under `view/`,
+you have to regenerate the embedded assets go sources with:
+
+```
+go generate
+```
+
+This builds the binary:
+
+```
+go build
+```
+
+And this installs it to `$GOPATH/bin`:
+
+```
+go install
+```
+
 ## License
 
 Shiori is distributed using [MIT license](https://choosealicense.com/licenses/mit/), which means you can use and modify it however you want. However, if you make an enhancement for it, if possible, please send a pull request.
